@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
-                  hintText: "Enter your email",
+                  hintText: "Enter a correct email",
                   labelText: "Email"),
               ),
           ),
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
               },
               validator: (value){
                 if(value!.isEmpty || value.length<8){
-                  return "Please enter your password";
+                  return "Please enter a correct password";
                 }
                 return null;
               },
@@ -124,18 +124,20 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(left: 50.0, right: 50.0),
           child: ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => LandingPage(
-                        userEmail: emailController.text.trim(),
-                      )),
-                ).then((res){
-                  emailController.clear();
-                  passwordController.clear();
-                }); // Proceso futuro que pasará después de la ejecución de otro
-                // emailController.clear();
-                // passwordController.clear();
+                _submit();
+                final isValid = _formKey.currentState!.validate()??false;
+                if(isValid){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LandingPage(
+                              userEmail: emailController.text.trim(),
+                            )),
+                  ).then((res){
+                    emailController.clear();
+                    passwordController.clear();
+                  }); // Proceso futuro que pasará después de la ejecución de otro
+                }
               },
               child: const Text(
                 "Login",
