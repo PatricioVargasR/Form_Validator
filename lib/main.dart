@@ -33,6 +33,13 @@ class _HomePageState extends State<HomePage> {
   // Llave global
   // final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormState>();
+  void _submit(){
+    final isValid = _formKey.currentState!.validate();
+    if(!isValid){
+      return;
+    }
+    _formKey.currentState!.save();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +98,15 @@ class _HomePageState extends State<HomePage> {
             Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
+              onFieldSubmitted: (value){
+                print(value);
+              },
+              validator: (value){
+                if(value!.isEmpty || value.length<8){
+                  return "Please enter your password";
+                }
+                return null;
+              },
               obscureText: true,
               controller: passwordController,
               decoration: const InputDecoration(
@@ -128,7 +144,6 @@ class _HomePageState extends State<HomePage> {
           )
         ],
         )
-      ),
-    );
+      ));
   }
 }
