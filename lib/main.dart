@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_screen.dart';
 
@@ -33,6 +34,8 @@ class _HomePageState extends State<HomePage> {
   // Llave global
   // final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormState>();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   void _submit(){
     final isValid = _formKey.currentState!.validate();
     if(!isValid){
@@ -41,6 +44,15 @@ class _HomePageState extends State<HomePage> {
     _formKey.currentState!.save();
   }
 
+  saveData() async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString("email", emailController.text.trim());
+  }
+  readData() async{
+    final SharedPreferences prefs = await _prefs;
+    final String? email = prefs.getString("email");
+    print(email);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
