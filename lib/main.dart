@@ -35,6 +35,8 @@ class _HomePageState extends State<HomePage> {
   // final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormState>();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late bool emailExist = false;
+
 
   void _submit(){
     final isValid = _formKey.currentState!.validate();
@@ -47,12 +49,27 @@ class _HomePageState extends State<HomePage> {
   saveData() async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString("email", emailController.text.trim());
+    print("Value" + emailController.text.trim());
   }
   readData() async{
     final SharedPreferences prefs = await _prefs;
     final String? email = prefs.getString("email");
-    print(email);
+    if(email != null){
+      setState(() {
+        emailExist = true;
+      });
+      print(email);
+    }
   }
+
+  // Metodo para acceder a las preferencias compartidas
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,6 +154,7 @@ class _HomePageState extends State<HomePage> {
           child: ElevatedButton(
               onPressed: () {
                 _submit();
+                saveData();
                 final isValid = _formKey.currentState!.validate()??false;
                 if(isValid){
                   Navigator.push(
