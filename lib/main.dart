@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-// Comanetario random
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -50,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   saveData() async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString("email", emailController.text.trim());
-    print("Value" + emailController.text.trim());
+    print("Value: " + emailController.text.trim());
   }
   readData() async{
     final SharedPreferences prefs = await _prefs;
@@ -59,6 +58,16 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         emailExist = true;
       });
+      // Forma más común de leer
+      if(emailExist) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LandingPage(
+                userEmail: email,
+              )),
+        );
+      }
       print(email);
     }
   }

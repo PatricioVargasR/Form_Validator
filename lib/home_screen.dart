@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({super.key, required this.userEmail});
@@ -10,6 +11,14 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  clearData() async {
+    final SharedPreferences prefs = await _prefs;
+    //prefs.clear
+    prefs.remove("email");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +64,7 @@ class _LandingPageState extends State<LandingPage> {
           ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
+                clearData();
               },
               child: const Text("Logout"),
           ),
